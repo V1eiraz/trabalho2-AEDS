@@ -49,26 +49,42 @@ def writearchive(arr):
         return
 
 
-clear_output()
+def executar_benchmark(vetor_completo, quantidade_elementos, numero_repeticoes):
+    soma_tempos_ms = 0
+    
+    for _ in range(numero_repeticoes):
+        # Cria uma cópia do subvetor original para não ordenar o que já está ordenado
+        vetor_dados = vetor_completo[:quantidade_elementos].copy()
+        
+        start = time.perf_counter()
+        randomized_quicksort(vetor_dados, 0, quantidade_elementos - 1)
+        end = time.perf_counter()
+        
+        soma_tempos_ms += (end - start) * 1000  # Converter para ms
+        
+    media_tempo_ms = soma_tempos_ms / numero_repeticoes
+    print(f"n = {quantidade_elementos:7d}  |  repeticoes = {numero_repeticoes:4d}  |  tempo medio = {media_tempo_ms:8.4f} ms")
 
-tempos_execucao = []
-
-for _ in range(10):
+if __name__ == "__main__":
+    # clear_output() # Comentado para manter o histórico
+    
     random.seed(67)
     nums, n = readarchive()
     
     if n > 0:
-        start = time.perf_counter()
-        randomized_quicksort(nums, 0, n - 1)
-        end = time.perf_counter()
+        tamanhos = [100, 1000, 10000, 100000, 1000000]
+        repeticoes = [100, 100, 100, 100, 100]
         
-        tempos_execucao.append(end - start)
-
-print(f"Tempo de execução: {tempos_execucao}\n")
-if tempos_execucao:
-    media_tempo = sum(tempos_execucao) / len(tempos_execucao)
-    print(f"Média de tempo de execução do Randomized QuickSort (10 iterações): {media_tempo:.6f} segundos")
-    
-    writearchive(nums)
-else:
-    print("Nenhum dado processado.")
+        print("Iniciando Benchmark do Randomized QuickSort...")
+        print("-" * 50)
+        
+        for i in range(len(tamanhos)):
+            if tamanhos[i] <= n:
+                executar_benchmark(nums, tamanhos[i], repeticoes[i])
+        
+        print("-" * 50)
+        print("Benchmark finalizado.")
+        
+        # writearchive(nums) # Opcional
+    else:
+        print("Nenhum dado encontrado para o benchmark.")

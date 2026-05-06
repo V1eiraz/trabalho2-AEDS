@@ -129,38 +129,50 @@ func writeArchive(arr []int) {
 	writer.Flush()
 }
 
-func main() {
-	clearOutput()
+func executarBenchmark(vetorCompleto []int, quantidadeElementos int, numeroRepeticoes int) {
+	var somaTemposMs float64
 
-	var temposExecucao []float64
-	var finalNums []int
+	for i := 0; i < numeroRepeticoes; i++ {
+		// Copia do subvetor para não ordenar o já ordenado
+		vetorDados := make([]int, quantidadeElementos)
+		copy(vetorDados, vetorCompleto[:quantidadeElementos])
 
-	for i := 0; i < 50; i++ {
-		rand.Seed(67)
-		nums, n := readArchive()
+		start := time.Now()
+		quicksort(vetorDados, 0, quantidadeElementos-1)
+		elapsed := time.Since(start).Seconds() * 1000.0 // em ms
 
-		if n > 0 {
-			start := time.Now()
-			quicksort(nums, 0, n-1)
-			elapsed := time.Since(start).Seconds()
-
-			temposExecucao = append(temposExecucao, elapsed)
-			finalNums = nums
-		}
+		somaTemposMs += elapsed
 	}
 
-	fmt.Printf("Tempo de execução: %v\n\n", temposExecucao)
+	mediaTempoMs := somaTemposMs / float64(numeroRepeticoes)
+	fmt.Printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms\n", quantidadeElementos, numeroRepeticoes, mediaTempoMs)
+}
 
-	if len(temposExecucao) > 0 {
-		var soma float64
-		for _, t := range temposExecucao {
-			soma += t
+func main() {
+	// clearOutput() // Comentado para manter o histórico no console
+
+	rand.Seed(67)
+	nums, n := readArchive()
+
+	if n > 0 {
+		tamanhos := []int{100, 1000, 10000, 100000, 1000000}
+		repeticoes := []int{100, 100, 100, 100, 100}
+
+		fmt.Println("Iniciando Benchmark do QuickSort (Median of Three)...")
+		fmt.Println("---------------------------------------------------------")
+
+		for i := 0; i < len(tamanhos); i++ {
+			if tamanhos[i] <= n {
+				executarBenchmark(nums, tamanhos[i], repeticoes[i])
+			}
 		}
-		mediaTempo := soma / float64(len(temposExecucao))
-		fmt.Printf("Média de tempo de execução do QuickSort (10 iterações): %.6f segundos\n", mediaTempo)
 
-		writeArchive(finalNums)
+		fmt.Println("---------------------------------------------------------")
+		fmt.Println("Benchmark finalizado.")
+
+		// Opcional: Salvar o último resultado ordenado do maior tamanho
+		// writeArchive(nums)
 	} else {
-		fmt.Println("Nenhum dado processado.")
+		fmt.Println("Nenhum dado encontrado para o benchmark.")
 	}
 }
