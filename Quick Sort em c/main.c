@@ -15,7 +15,7 @@ int main() {
     printf("==============================================\n");
 
     int tamanhos_entrada[]       = {100,  1000, 10000, 100000, 1000000};
-    int repeticoes_por_tamanho[] = {1000,  500,   250,    100,      50};
+    int repeticoes_por_tamanho[] = {100,  100,   100,    100,      100};
     int numero_tamanhos = sizeof(tamanhos_entrada) / sizeof(tamanhos_entrada[0]);
 
     for (int i = 0; i < numero_tamanhos; i++) {
