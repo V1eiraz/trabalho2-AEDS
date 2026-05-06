@@ -1,9 +1,9 @@
-/* 
-    Compilação e execução 
-    
-    -> javac randomizedquicksortjava/RandomizedQuicksort.java
-    -> java -cp . randomizedquicksortjava.RandomizedQuicksort randomizedquicksortjava/input.dat
+/*
 
+    Compilação e execução
+
+    -> javac randomizedquicksortjava/RandomizedQuicksort.java
+    -> java -cp . randomizedquicksortjava.RandomizedQuicksort randomizedquicksortjava/<nome_do_arquivo>
 */
 
 package randomizedquicksortjava;
@@ -100,10 +100,9 @@ public class RandomizedQuicksort{
         String file = args[0];
 
         int[] tamanhos   = {100, 1000, 10000, 100000, 1000000};
-        int[] repeticoes = {1000, 500, 250, 100, 50};
+        int reps = 100;
 
-        for(int i = 0; i < tamanhos.length; i++){
-            benchmark(file, tamanhos[i], repeticoes[i]);
-        }
+        for(int i = 0; i < tamanhos.length; i++)
+            benchmark(file, tamanhos[i], reps);
     }
 }

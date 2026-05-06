@@ -1,8 +1,9 @@
-/* 
+/*
+
     Compilação e execução 
-    
+
     -> javac quicksortjava/Quicksort.java
-    -> java -cp . quicksortjava.Quicksort quicksortjava/input.dat
+    -> java -cp . quicksortjava.Quicksort quicksortjava/<nome_do_arquivo>
 
 */
 
@@ -105,17 +106,16 @@ public class Quicksort{
         }
         double avg = tempoTotal / reps;
 
-        System.out.printf("Tamanho = %d\nRepeticoes = %d\nTempo medio = %.4f ms\n\n", n, reps, avg);
+        System.out.printf("Tamanho = %d\nRepetições = %d\nTempo médio = %.4f ms\n\n", n, reps, avg);
     }
 
     public static void main(String[] args){
         String file = args[0];
 
         int[] tamanhos   = {100, 1000, 10000, 100000, 1000000};
-        int[] repeticoes = {1000, 500, 250, 100, 50};
+        int reps = 100;
 
-        for(int i = 0; i < tamanhos.length; i++){
-            benchmark(file, tamanhos[i], repeticoes[i]);
-        }
+        for(int i = 0; i < tamanhos.length; i++)
+            benchmark(file, tamanhos[i], reps);
     }
 }
