@@ -1,6 +1,7 @@
 import os
 import time
 import random
+random.seed(67)
 
 def clear_output():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -56,26 +57,40 @@ def writearchive(arr):
         print("Erro ao escrever arquivo!")
         return
 
-clear_output()
+def executar_benchmark(vetor_completo, quantidade_elementos, numero_repeticoes):
+    soma_tempos_ms = 0.0
 
-tempos_execucao = []
-
-for _ in range(50):
-    random.seed(67)
-    nums, n = readarchive()
-    
-    if n > 0:
+    for _ in range(numero_repeticoes):
+        # Copia o subvetor para ter sempre os dados desordenados originais
+        vetor_dados = vetor_completo[:quantidade_elementos]
+        
         start = time.perf_counter()
-        quicksort(nums, 0, n-1)
+        quicksort(vetor_dados, 0, quantidade_elementos - 1)
         end = time.perf_counter()
         
-        tempos_execucao.append(end - start)
-    
-print(f"Tempo de execução: {tempos_execucao}\n")
-if tempos_execucao:
-    media_tempo = sum(tempos_execucao) / len(tempos_execucao)
-    print(f"Média de tempo de execução do QuickSort (10 iterações): {media_tempo:.6f} segundos")
-    
-    writearchive(nums)
+        soma_tempos_ms += (end - start) * 1000.0
+        
+    media_tempo_ms = soma_tempos_ms / numero_repeticoes
+    print(f"n = {quantidade_elementos:7d}  |  repeticoes = {numero_repeticoes:4d}  |  tempo medio = {media_tempo_ms:8.4f} ms")
+
+clear_output()
+
+nums, n = readarchive()
+
+if n > 0:
+    print("==============================================")
+    print("  Quick Sort - Pivo: Mediana de Tres (Python) ")
+    print("==============================================")
+
+    tamanhos_entrada = [100, 1000, 10000, 100000, 1000000]
+    repeticoes_por_tamanho = [100, 100, 100, 100, 100]
+
+    for tamanho, repeticoes in zip(tamanhos_entrada, repeticoes_por_tamanho):
+        if tamanho <= n:
+            executar_benchmark(nums, tamanho, repeticoes)
+        else:
+            print(f"Erro: arquivo tem menos de {tamanho} valores")
+
+    print("==============================================")
 else:
     print("Nenhum dado processado.")
