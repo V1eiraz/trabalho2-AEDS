@@ -68,7 +68,7 @@ int main() {
     for (size_t n : inputSizes) {
         try {
             // Para n=1000000 reduz para 10 repetições (evita espera muito longa)
-            int runs = (n == 1000000) ? 10 : 100;
+            int runs = 100;
             runBenchmark(&rqs, loader, n, runs);
         } catch (const std::exception& e) {
             std::cerr << "[ERRO] n=" << n << ": " << e.what() << std::endl;
