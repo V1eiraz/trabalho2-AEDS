@@ -84,6 +84,7 @@ public class Quicksort{
     }
 
     static void benchmark(String file, int n, int reps){
+        // TEMPO MÉDIO
         double tempoTotal = 0.0;
 
         for(int repeticao = 0; repeticao < reps; repeticao++){
@@ -106,7 +107,28 @@ public class Quicksort{
         }
         double avg = tempoTotal / reps;
 
-        System.out.printf("Tamanho = %d\nRepetições = %d\nTempo médio = %.4f ms\n\n", n, reps, avg);
+        // CONSUMO DE MEMÓRIA
+        Runtime rt = Runtime.getRuntime();
+        System.gc();
+
+        long m0 = rt.totalMemory() - rt.freeMemory();
+
+        int[] arrayMem;
+
+        try{
+            arrayMem = lerArquivoEntrada(file, n);
+        }catch(IOException erro){
+            System.out.println("Erro: " + erro.getMessage());
+            return;
+        }
+
+        random = new Random(67);
+        quickSort(arrayMem, 0, n - 1);
+        long m1 = rt.totalMemory() - rt.freeMemory();
+        
+        long deltaKB = (m1 - m0) / 1024;
+
+        System.out.printf("Tamanho = %d\nRepetições = %d\nTempo médio = %.4f ms\nMemória = %d KB\n\n", n, reps, avg, deltaKB);
     }
 
     public static void main(String[] args){
