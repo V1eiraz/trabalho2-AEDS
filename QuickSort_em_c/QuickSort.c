@@ -28,15 +28,6 @@ void trocar_elementos(int *elemento_a, int *elemento_b) {
 
 /* ─────────────────────────────────────────────
  * SORTEAR INDICE UNICO DENTRO DO INTERVALO
- *
- * Sorteia um indice aleatorio entre
- * indice_inicio e indice_fim (inclusive),
- * garantindo que o resultado seja diferente
- * dos indices ja sorteados passados como
- * parametro (indice_excluido_a e _b).
- *
- * Isso garante que os tres candidatos da
- * mediana sejam sempre posicoes distintas.
  * ───────────────────────────────────────────── */
 int sortear_indice_unico(int indice_inicio, int indice_fim,
                          int indice_excluido_a, int indice_excluido_b) {
@@ -49,14 +40,6 @@ int sortear_indice_unico(int indice_inicio, int indice_fim,
 
 /* ─────────────────────────────────────────────
  * MEDIANA DE TRES COM CANDIDATOS ALEATORIOS
- *
- * Sorteia tres indices distintos dentro do
- * subvetor e retorna o INDICE do elemento
- * que possui o valor central entre os tres.
- *
- * Para subvetor de tamanho 2, sorteia
- * diretamente um dos dois como pivo pois
- * nao e possivel ter 3 candidatos distintos.
  * ───────────────────────────────────────────── */
 int calcular_indice_mediana(int *vetor, int indice_inicio, int indice_fim) {
     int tamanho_subvetor = indice_fim - indice_inicio + 1;
@@ -85,13 +68,6 @@ int calcular_indice_mediana(int *vetor, int indice_inicio, int indice_fim) {
 
 /* ─────────────────────────────────────────────
  * PARTICIONAR SUBVETOR
- *
- * 1. Escolhe o pivo pela mediana de tres.
- * 2. Move o pivo para a ultima posicao.
- * 3. Percorre o subvetor colocando elementos
- *    menores que o pivo a esquerda.
- * 4. Posiciona o pivo definitivamente.
- * 5. Retorna o indice final do pivo.
  * ───────────────────────────────────────────── */
 int particionar(int *vetor, int indice_inicio, int indice_fim) {
     int indice_pivo = calcular_indice_mediana(vetor, indice_inicio, indice_fim);
@@ -126,15 +102,15 @@ void quick_sort(int *vetor, int indice_inicio, int indice_fim) {
 /* ─────────────────────────────────────────────
  * LEITURA DO ARQUIVO DE ENTRADA
  *
- * Le exatamente quantidade_elementos inteiros
- * do arquivo definido em NOME_ARQUIVO_ENTRADA,
- * independente de como estao dispostos nas
- * linhas. Retorna 1 em sucesso, 0 em falha.
+ * Agora recebe o nome do arquivo como parametro
+ * em vez de usar uma constante fixa no .h.
+ * Isso permite rodar com input.dat, crescente.dat
+ * e decrescente.dat sem recompilar.
  * ───────────────────────────────────────────── */
-int ler_arquivo_entrada(int *vetor, int quantidade_elementos) {
-    FILE *arquivo_entrada = fopen(NOME_ARQUIVO_ENTRADA, "r");
+int ler_arquivo_entrada(const char *nome_arquivo, int *vetor, int quantidade_elementos) {
+    FILE *arquivo_entrada = fopen(nome_arquivo, "r");
     if (arquivo_entrada == NULL) {
-        fprintf(stderr, "Erro: nao foi possivel abrir '%s'\n", NOME_ARQUIVO_ENTRADA);
+        fprintf(stderr, "Erro: nao foi possivel abrir '%s'\n", nome_arquivo);
         return 0;
     }
     for (int i = 0; i < quantidade_elementos; i++) {
@@ -150,14 +126,6 @@ int ler_arquivo_entrada(int *vetor, int quantidade_elementos) {
 
 /* ─────────────────────────────────────────────
  * ESCRITA DO ARQUIVO DE SAIDA
- *
- * Escreve todos os elementos do vetor ja
- * ordenado no arquivo definido em
- * NOME_ARQUIVO_SAIDA, um numero por linha.
- *
- * Essa funcao e chamada apenas uma vez, apos
- * todos os benchmarks, para nao interferir
- * nas medicoes de tempo.
  * ───────────────────────────────────────────── */
 void escrever_arquivo_saida(int *vetor, int quantidade_elementos) {
     FILE *arquivo_saida = fopen(NOME_ARQUIVO_SAIDA, "w");
@@ -175,15 +143,12 @@ void escrever_arquivo_saida(int *vetor, int quantidade_elementos) {
 /* ─────────────────────────────────────────────
  * EXECUTAR BENCHMARK PARA UM TAMANHO
  *
- * Repete a ordenacao numero_repeticoes vezes,
- * acumula os tempos e imprime a media.
- *
- * O arquivo e relido a cada repeticao pois
- * o Quick Sort modifica o vetor. Sem isso,
- * a segunda execucao ordenaria dados ja
- * ordenados, tornando a media desonesta.
+ * Recebe o nome do arquivo como parametro.
+ * A medicao de memoria foi removida daqui —
+ * ela e feita externamente pelo GNU Time
+ * no script .sh, um processo por tamanho.
  * ───────────────────────────────────────────── */
-void executar_benchmark(int quantidade_elementos, int numero_repeticoes) {
+void executar_benchmark(const char *nome_arquivo, int quantidade_elementos, int numero_repeticoes) {
     double soma_tempos_ms = 0.0;
 
     for (int repeticao = 0; repeticao < numero_repeticoes; repeticao++) {
@@ -193,7 +158,7 @@ void executar_benchmark(int quantidade_elementos, int numero_repeticoes) {
             return;
         }
 
-        if (ler_arquivo_entrada(vetor_dados, quantidade_elementos) == 0) {
+        if (ler_arquivo_entrada(nome_arquivo, vetor_dados, quantidade_elementos) == 0) {
             free(vetor_dados);
             return;
         }
@@ -210,39 +175,16 @@ void executar_benchmark(int quantidade_elementos, int numero_repeticoes) {
         free(vetor_dados);
     }
 
-    double media_tempo_ms  = soma_tempos_ms / numero_repeticoes;
+    double media_tempo_ms = soma_tempos_ms / numero_repeticoes;
 
-    /*
-     * CALCULO DO USO DE MEMORIA
-     *
-     * Para cada entrada de tamanho n, o vetor
-     * ocupa exatamente n * sizeof(int) bytes.
-     * sizeof(int) retorna 4 bytes na maioria
-     * dos sistemas modernos de 64 bits.
-     *
-     * Dividimos por 1024.0 para converter
-     * bytes em kilobytes (KB).
-     *
-     * Exemplo para n=1.000.000:
-     *   1.000.000 * 4 = 4.000.000 bytes
-     *   4.000.000 / 1024 = 3906.25 KB
-     */
-    double memoria_vetor_kb = (quantidade_elementos * sizeof(int)) / 1024.0;
-
-    printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms  |  memoria = %8.2f KB\n",
-           quantidade_elementos, numero_repeticoes, media_tempo_ms, memoria_vetor_kb);
+    printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms\n",
+           quantidade_elementos, numero_repeticoes, media_tempo_ms);
 }
 
 /* ─────────────────────────────────────────────
  * GERAR OUTPUT ORDENADO
- *
- * Le o maior tamanho de entrada (1.000.000),
- * ordena uma unica vez e salva em output.dat.
- *
- * Feito separadamente do benchmark para nao
- * contaminar as medicoes de tempo.
  * ───────────────────────────────────────────── */
-void gerar_output_ordenado() {
+void gerar_output_ordenado(const char *nome_arquivo) {
     int quantidade_elementos = 1000000;
 
     int *vetor_dados = (int *)malloc(quantidade_elementos * sizeof(int));
@@ -251,7 +193,7 @@ void gerar_output_ordenado() {
         return;
     }
 
-    if (ler_arquivo_entrada(vetor_dados, quantidade_elementos) == 0) {
+    if (ler_arquivo_entrada(nome_arquivo, vetor_dados, quantidade_elementos) == 0) {
         free(vetor_dados);
         return;
     }

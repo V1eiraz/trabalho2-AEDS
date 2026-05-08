@@ -2,29 +2,34 @@
  * Randomized Quick Sort - Pivo Aleatorio (seed 67)
  * Seminario: Ordenacoes por Divisao Recursiva
  *
- * Compilar: make
- * Executar: make run
+ * Compilar: gcc -O0 -o RandomizedQuickSort mainRandomized.c RandomizedQuickSort.c
+ * Executar: ./executar.sh
  */
 
 #include "RandomizedQuickSort.h"
 
-int main() {
-    printf("==============================================\n");
-    printf("  Randomized Quick Sort - Pivo Aleatorio (C)\n");
-    printf("  Seed: 67\n");
-    printf("==============================================\n");
-
-    int tamanhos_entrada[]       = {100,  1000, 10000, 100000, 1000000};
-    int repeticoes_por_tamanho[] = {100,  100,   100,    100,      100};
-    int numero_tamanhos = sizeof(tamanhos_entrada) / sizeof(tamanhos_entrada[0]);
-
-    for (int i = 0; i < numero_tamanhos; i++) {
-        executar_benchmark(tamanhos_entrada[i], repeticoes_por_tamanho[i]);
+/*
+ * Recebe dois argumentos:
+ *   argv[1] = nome do arquivo de entrada
+ *   argv[2] = tamanho da entrada (n)
+ */
+int main(int argc, char *argv[]) {
+    if (argc < 3) {
+        fprintf(stderr, "Uso: %s <arquivo> <tamanho>\n", argv[0]);
+        fprintf(stderr, "Exemplo: %s input.dat 1000\n", argv[0]);
+        return 1;
     }
 
-    printf("==============================================\n");
+    const char *nome_arquivo         = argv[1];
+    int         quantidade_elementos = atoi(argv[2]);
 
-    gerar_output_ordenado();
+    printf("n = %7d  |  arquivo = %s\n", quantidade_elementos, nome_arquivo);
+
+    executar_benchmark(nome_arquivo, quantidade_elementos, 100);
+
+    if (quantidade_elementos == 1000000) {
+        gerar_output_ordenado(nome_arquivo);
+    }
 
     return 0;
 }

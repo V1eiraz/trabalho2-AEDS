@@ -7,11 +7,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-/* Nome fixo do arquivo de entrada */
-#define NOME_ARQUIVO_ENTRADA "decrescente.dat"
-
 /* Nome fixo do arquivo de saida */
-#define NOME_ARQUIVO_SAIDA   "output.dat"
+#define NOME_ARQUIVO_SAIDA "output.dat"
 
 /* ── Utilitarios ─────────────────────────────── */
 double calcular_tempo_ms(struct timespec tempo_inicio, struct timespec tempo_fim);
@@ -27,11 +24,11 @@ int  particionar(int *vetor, int indice_inicio, int indice_fim);
 void quick_sort(int *vetor, int indice_inicio, int indice_fim);
 
 /* ── Entrada e saida ─────────────────────────── */
-int  ler_arquivo_entrada(int *vetor, int quantidade_elementos);
+int  ler_arquivo_entrada(const char *nome_arquivo, int *vetor, int quantidade_elementos);
 void escrever_arquivo_saida(int *vetor, int quantidade_elementos);
 
 /* ── Benchmark ───────────────────────────────── */
-void executar_benchmark(int quantidade_elementos, int numero_repeticoes);
-void gerar_output_ordenado(void);
+void executar_benchmark(const char *nome_arquivo, int quantidade_elementos, int numero_repeticoes);
+void gerar_output_ordenado(const char *nome_arquivo);
 
 #endif
