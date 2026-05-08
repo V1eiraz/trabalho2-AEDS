@@ -1,3 +1,7 @@
+//Para executar o código:
+// go build main.go
+// .\main.exe ou go run main.go
+
 package main
 
 import (
@@ -108,27 +112,52 @@ func writeArchive(arr []int) {
 	writer.Flush()
 }
 
+func getMemoriaRSSKb() int64 {
+	data, err := os.ReadFile("/proc/self/status")
+	if err != nil {
+		return 0
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		if strings.HasPrefix(line, "VmRSS:") {
+			fields := strings.Fields(line)
+			val, _ := strconv.ParseInt(fields[1], 10, 64)
+			return val
+		}
+	}
+	return 0
+}
+
 func executarBenchmark(vetorCompleto []int, quantidadeElementos int, numeroRepeticoes int) {
 	var somaTemposMs float64
+	var somaMemoriaKb int64
 
 	for i := 0; i < numeroRepeticoes; i++ {
-		// Copia do subvetor para não ordenar o já ordenado
 		vetorDados := make([]int, quantidadeElementos)
 		copy(vetorDados, vetorCompleto[:quantidadeElementos])
 
+		runtime.GC()
+
+		antes := getMemoriaRSSKb()
+
 		start := time.Now()
 		quicksort(vetorDados, 0, quantidadeElementos-1)
-		elapsed := time.Since(start).Seconds() * 1000.0 // em ms
+		elapsed := time.Since(start).Seconds() * 1000.0
+
+		depois := getMemoriaRSSKb()
 
 		somaTemposMs += elapsed
+		somaMemoriaKb += depois - antes
 	}
 
 	mediaTempoMs := somaTemposMs / float64(numeroRepeticoes)
-	fmt.Printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms\n", quantidadeElementos, numeroRepeticoes, mediaTempoMs)
+	mediaMemoriaKb := float64(somaMemoriaKb) / float64(numeroRepeticoes)
+
+	fmt.Printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms  |  memoria = %8.2f KB\n",
+		quantidadeElementos, numeroRepeticoes, mediaTempoMs, mediaMemoriaKb)
 }
 
 func main() {
-	// clearOutput() // Comentado para manter o histórico no console
+	clearOutput()
 
 	rand.Seed(67)
 	nums, n := readArchive()

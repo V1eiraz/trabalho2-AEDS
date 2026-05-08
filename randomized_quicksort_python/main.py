@@ -1,6 +1,7 @@
 import os
 import time
 import random
+import gc
 
 def clear_output():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -48,25 +49,43 @@ def writearchive(arr):
         print("Erro ao escrever arquivo!")
         return
 
+def get_memoria_rss_kb():
+    try:
+        with open("/proc/self/status", "r") as f:
+            for line in f:
+                if line.startswith("VmRSS:"):
+                    return int(line.split()[1])
+    except:
+        return 0
+    return 0
 
 def executar_benchmark(vetor_completo, quantidade_elementos, numero_repeticoes):
-    soma_tempos_ms = 0
-    
+    soma_tempos_ms = 0.0
+    soma_memoria_kb = 0
+
     for _ in range(numero_repeticoes):
-        # Cria uma cópia do subvetor original para não ordenar o que já está ordenado
         vetor_dados = vetor_completo[:quantidade_elementos].copy()
-        
+
+        gc.collect()
+        antes = get_memoria_rss_kb()
+
         start = time.perf_counter()
         randomized_quicksort(vetor_dados, 0, quantidade_elementos - 1)
         end = time.perf_counter()
-        
-        soma_tempos_ms += (end - start) * 1000  # Converter para ms
-        
+
+        depois = get_memoria_rss_kb()
+
+        soma_tempos_ms += (end - start) * 1000.0
+        soma_memoria_kb += depois - antes
+
     media_tempo_ms = soma_tempos_ms / numero_repeticoes
-    print(f"n = {quantidade_elementos:7d}  |  repeticoes = {numero_repeticoes:4d}  |  tempo medio = {media_tempo_ms:8.4f} ms")
+    media_memoria_kb = soma_memoria_kb / numero_repeticoes
+
+    print(f"n = {quantidade_elementos:7d}  |  repeticoes = {numero_repeticoes:4d}  |  tempo medio = {media_tempo_ms:8.4f} ms  |  memoria = {media_memoria_kb:8.2f} KB")
+
 
 if __name__ == "__main__":
-    # clear_output() # Comentado para manter o histórico
+    clear_output()
     
     random.seed(67)
     nums, n = readarchive()
@@ -85,6 +104,5 @@ if __name__ == "__main__":
         print("-" * 50)
         print("Benchmark finalizado.")
         
-        # writearchive(nums) # Opcional
     else:
         print("Nenhum dado encontrado para o benchmark.")
