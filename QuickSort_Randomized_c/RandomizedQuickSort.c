@@ -183,10 +183,27 @@ void executar_benchmark(int quantidade_elementos, int numero_repeticoes) {
         free(vetor_dados);
     }
 
-    double media_tempo_ms = soma_tempos_ms / numero_repeticoes;
+    double media_tempo_ms  = soma_tempos_ms / numero_repeticoes;
 
-    printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms\n",
-           quantidade_elementos, numero_repeticoes, media_tempo_ms);
+    /*
+     * CALCULO DO USO DE MEMORIA
+     *
+     * Para cada entrada de tamanho n, o vetor
+     * ocupa exatamente n * sizeof(int) bytes.
+     * sizeof(int) retorna 4 bytes na maioria
+     * dos sistemas modernos de 64 bits.
+     *
+     * Dividimos por 1024.0 para converter
+     * bytes em kilobytes (KB).
+     *
+     * Exemplo para n=1.000.000:
+     *   1.000.000 * 4 = 4.000.000 bytes
+     *   4.000.000 / 1024 = 3906.25 KB
+     */
+    double memoria_vetor_kb = (quantidade_elementos * sizeof(int)) / 1024.0;
+
+    printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms  |  memoria = %8.2f KB\n",
+           quantidade_elementos, numero_repeticoes, media_tempo_ms, memoria_vetor_kb);
 }
 
 /* ─────────────────────────────────────────────
