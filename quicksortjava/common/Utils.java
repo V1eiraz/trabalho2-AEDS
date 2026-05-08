@@ -1,9 +1,8 @@
 package quicksortjava.common;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.StreamTokenizer;
 
 public class Utils{
     public static double calcularTempoMs(long inicio, long fim){
@@ -17,14 +16,41 @@ public class Utils{
     }
 
     public static int[] lerArquivo(String file, int n) throws IOException{
-        int[] array = new int[n];
-        StreamTokenizer st = new StreamTokenizer(new BufferedReader(new FileReader(file)));
-        
-        for(int i = 0; i < n; i++){
-            if(st.nextToken() == StreamTokenizer.TT_EOF)
+        try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))){
+            int[] array = new int[n];
+
+            int c;
+
+            while((c = bis.read()) != '\n'){
+                if(c == -1)
+                    throw new IOException("Arquivo inválido");
+            }
+
+            int i = 0;
+            int num = 0;
+            boolean lendoNumero = false;
+
+            while((c = bis.read()) != -1 && i < n){
+                if(c >= '0' && c <= '9'){
+                    num = num * 10 + (c - '0');
+                    lendoNumero = true;
+                }
+                else{
+                    if(lendoNumero){
+                        array[i++] = num;
+                        num = 0;
+                        lendoNumero = false;
+                    }
+                }
+            }
+
+            if(lendoNumero && i < n)
+                array[i++] = num;
+
+            if(i < n)
                 throw new IOException("Arquivo tem menos de " + n + " valores");
-            array[i] = (int) st.nval;
+
+            return array;
         }
-        return array;
     }
 }

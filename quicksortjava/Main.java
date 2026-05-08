@@ -1,58 +1,36 @@
-/* 
-    Compilar: javac -d quicksortjava/bin quicksortjava/common/*.java quicksortjava/algorithms/*.java quicksortjava/Main.java
-    Executar: java -cp quicksortjava/bin quicksortjava.Main
+/*  
+    *O TERMINAL PRECISA ESTAR NA PASTA RAIZ "trabalho2-AEDS" para funcionar...*
+    
+    Permissão: chmod +x javaRun.sh
+    Executar: ./javaRun.sh
 */
 package quicksortjava;
+
+import java.util.Locale;
 
 import quicksortjava.algorithms.Quicksort;
 import quicksortjava.algorithms.RandomizedQuicksort;
 import quicksortjava.common.Benchmark;
-import java.io.*;
+import quicksortjava.common.SortAlgorithm;
 
 public class Main{
     static final long SEED = 67;
-    static final int[] TAMANHOS = {100, 1_000, 10_000, 100_000, 1_000_000};
     static final int REPS = 100;
-
-    static final String CABECALHO =
-        "+------------+--------------+------------------+--------------+\n" +
-        "| Tamanho    | Repetições   | Tempo médio (ms) | Memória (KB) |\n" +
-        "+------------+--------------+------------------+--------------+";
     
-    static final String RODAPE = 
-        "+------------+--------------+------------------+--------------+";
-
     public static void main(String[] args){
-        File pasta = new File("inputs").exists() ? new File("inputs") : new File("quicksortjava/inputs");
-        File[] arquivos = pasta.listFiles();
-
-        if(arquivos == null || arquivos.length == 0){
-            System.out.println("Nenhum arquivo encontrado na pasta inputs/");
-            return;
+        if(args.length < 3){
+            System.err.println("Está faltando algum dos argumentos na compilação!");
+            System.exit(1);
         }
+        
+        String file = args[0];
+        int n = Integer.parseInt(args[1]);
+        String algoritmo = args[2];
 
-        try(PrintWriter output = new PrintWriter(new FileWriter("quicksortjava/output/output.dat"))){
-            for(File arquivo : arquivos){
-                output.println("========================================");
-                output.println("Arquivo: " + arquivo.getName());
-                output.println("========================================");
+        SortAlgorithm algoritmos = algoritmo.equals("qs") ? new Quicksort(SEED) : new RandomizedQuicksort(SEED);
 
-                String caminho = arquivo.getPath();
+        double avg = Benchmark.calcularTempo(file, n, REPS, algoritmos);
 
-                output.println("--- Quicksort (Mediana de 3) ---");
-                output.println(CABECALHO);
-                for(int n : TAMANHOS)
-                    Benchmark.executar(caminho, n, REPS, new Quicksort(SEED), output);
-                output.println(RODAPE);
-                
-                output.println("\n--- Randomized Quicksort ---");
-                output.println(CABECALHO);
-                for(int n : TAMANHOS)
-                    Benchmark.executar(caminho, n, REPS, new RandomizedQuicksort(SEED), output);
-                output.println(RODAPE);
-            }
-        }catch(IOException e){
-            System.err.println("Erro ao escrever output.dat: " + e. getMessage());
-        }
+        System.out.printf(Locale.US, "%.4f%n", avg);
     }
 }
