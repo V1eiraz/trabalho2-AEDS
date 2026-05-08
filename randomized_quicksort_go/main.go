@@ -178,8 +178,6 @@ func main() {
 		fmt.Println("---------------------------------------------------------")
 		fmt.Println("Benchmark finalizado.")
 
-		// Opcional: Salvar o último resultado ordenado do maior tamanho
-		// writeArchive(nums)
 	} else {
 		fmt.Println("Nenhum dado encontrado para o benchmark.")
 	}
