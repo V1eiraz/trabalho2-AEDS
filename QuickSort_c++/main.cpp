@@ -1,101 +1,44 @@
 #include <iostream>
-#include <iomanip>
-#include <vector>
-
-#include "Sorter.hpp"
+#include <string>
+#include <cstdlib>
 #include "QuickSort.hpp"
-#include "DataLoader.hpp"
-#include "Timer.hpp"
-
-// ─────────────────────────────────────────────────────────────────────────────
-// runSingleSort
-//
-// Executa uma única ordenação e retorna o tempo em milissegundos
-// ─────────────────────────────────────────────────────────────────────────────
-double runSingleSort(Sorter* sorter, std::vector<int>& data) {
-    Timer timer;
-    timer.start();
-    sorter->sort(data);
-    timer.stop();
-    return timer.elapsedMilliseconds();
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// runExperiment
-//
-// Executa um experimento múltiplas vezes (repetições) para um dado algoritmo 
-// e tamanho de entrada, calculando a média dos tempos:
-//   1. Para cada repetição:
-//      - Carrega os primeiros 'n' elementos do arquivo via DataLoader
-//      - Executa o algoritmo de ordenação
-//      - Acumula o tempo
-//   2. Calcula a média e imprime o resultado
-//
-// Parâmetros:
-//   sorter      — ponteiro para qualquer objeto que implemente Sorter
-//   loader      — objeto que lê o arquivo de entrada
-//   n           — quantidade de elementos a ordenar
-//   repetitions — número de vezes a executar (padrão: 100)
-// ─────────────────────────────────────────────────────────────────────────────
-void runExperiment(Sorter* sorter, const DataLoader& loader, size_t n, int repetitions = 100) {
-    double totalTime = 0.0;
-    
-    for (int i = 0; i < repetitions; ++i) {
-        try {
-            // Carrega uma CÓPIA dos dados
-            std::vector<int> data = loader.load(n);
-            totalTime += runSingleSort(sorter, data);
-        } catch (const std::exception& e) {
-            std::cerr << "[ERRO] n=" << n << " (repetição " << i+1 << "): " << e.what() << std::endl;
-            return;
-        }
-    }
-    
-    double averageTime = totalTime / repetitions;
-    
-    // Formatação da saída: nome do algoritmo, tamanho, tempo médio
-    std::cout << std::left
-              << std::setw(32) << sorter->name()
-              << " | n = " << std::setw(10) << n
-              << " | Tempo médio: "
-              << std::fixed << std::setprecision(4)
-              << averageTime << " ms"
-              << "  (" << averageTime / 1000.0 << " s)"
-              << " [" << repetitions << " runs]"
-              << std::endl;
-}
+#include "benchmark.hpp"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // main
+//
+// Recebe dois argumentos pela linha de comando:
+//   argv[1] — caminho do arquivo de entrada  (ex: input.dat)
+//   argv[2] — quantidade de elementos a ordenar (ex: 1000)
+//
+// Isso permite que o script executar.sh invoque o programa uma vez
+// por combinação (arquivo x tamanho), de modo que o GNU Time meça
+// o pico de memória de cada execução individualmente.
 // ─────────────────────────────────────────────────────────────────────────────
-int main() {
+int main(int argc, char* argv[]) {
 
-    std::string filePath = "input.dat";
-
-    DataLoader loader(filePath);
-
-    // Tamanhos de entrada exigidos pelo trabalho
-    std::vector<size_t> inputSizes = {100, 1000, 10000, 100000, 1000000};
-
-    // Instância do algoritmo (pode adicionar outros aqui futuramente)
-    QuickSort qs;
-
-    std::cout << "========================================================" << std::endl;
-    std::cout << "   Experimento: Algoritmos de Ordenacao" << std::endl;
-    std::cout << "   Arquivo de entrada: " << filePath << std::endl;
-    std::cout << "========================================================" << std::endl;
-    std::cout << std::endl;
-
-    for (size_t n : inputSizes) {
-        try {
-            runExperiment(&qs, loader, n);
-        } catch (const std::exception& e) {
-            std::cerr << "[ERRO] n=" << n << ": " << e.what() << std::endl;
-        }
+    if (argc != 3) {
+        std::cerr << "Uso: " << argv[0] << " <arquivo> <tamanho>" << std::endl;
+        std::cerr << "Exemplo: " << argv[0] << " input.dat 1000" << std::endl;
+        return 1;
     }
 
-    std::cout << std::endl;
-    std::cout << "Experimento concluido." << std::endl;
+    std::string filePath = argv[1];
+    size_t n = static_cast<size_t>(std::atoi(argv[2]));
+
+    if (n == 0) {
+        std::cerr << "[ERRO] Tamanho invalido: " << argv[2] << std::endl;
+        return 1;
+    }
+
+    QuickSort qs;
+
+    try {
+        runExperiment(&qs, filePath, n);
+    } catch (const std::exception& e) {
+        std::cerr << "[ERRO] " << e.what() << std::endl;
+        return 1;
+    }
 
     return 0;
 }
