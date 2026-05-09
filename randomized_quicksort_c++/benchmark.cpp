@@ -47,7 +47,7 @@ void runExperiment(Sorter* sorter, const DataLoader& loader, size_t n, int repet
     double averageTime = totalTime / repetitions;
 
     std::cout << std::left
-              << std::setw(32) << sorter->name()
+              << std::setw(24) << sorter->name()
               << " | n = "     << std::setw(10) << n
               << " | Tempo medio: "
               << std::fixed    << std::setprecision(4)

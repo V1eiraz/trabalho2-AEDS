@@ -32,9 +32,10 @@ int main(int argc, char* argv[]) {
     }
 
     QuickSort qs;
+    DataLoader loader(filePath);
 
     try {
-        runExperiment(&qs, filePath, n);
+        runExperiment(&qs, loader, n);
     } catch (const std::exception& e) {
         std::cerr << "[ERRO] " << e.what() << std::endl;
         return 1;

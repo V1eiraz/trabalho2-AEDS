@@ -4,106 +4,52 @@
 #include "Sorter.hpp"
 #include <vector>
 #include <string>
-#include <algorithm>   // std::swap
-#include <random>      // std::mt19937, std::uniform_int_distribution
+#include <random>   // std::mt19937
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Classe RandomizedQuickSort
 //
-// Implementa o QuickSort com seleção de pivô ALEATÓRIA.
+// Implementa o QuickSort com seleção de pivô ALEATÓRIA pura.
 //
-// Diferença em relação ao QuickSort clássico (mediana de três):
-//   - Em vez de escolher o pivô com base nos valores de três posições fixas,
-//     sorteia aleatoriamente UM índice dentro do subvetor atual e usa o valor
-//     desse índice como pivô.
+// Diferença em relação ao QuickSort (mediana de três):
+//   - Sorteia aleatoriamente UM índice dentro do subvetor e usa o valor
+//     desse índice como pivô, sem considerar os valores dos vizinhos.
 //
 // Por que isso é útil?
-//   - O QuickSort com pivô fixo (ex: sempre o último elemento) degrada para
-//     O(n²) em arrays já ordenados ou quase ordenados.
-//   - A aleatoriedade elimina qualquer padrão de entrada que possa causar
-//     esse pior caso — na média, o desempenho se mantém O(n log n)
-//     independentemente da disposição dos dados.
+//   - Elimina qualquer padrão de entrada que possa causar o pior caso
+//     O(n²), mantendo O(n log n) esperado independentemente dos dados.
 //
-// O gerador de números aleatórios (mt19937) é inicializado UMA VEZ
-// no construtor com uma semente baseada no relógio do sistema,
-// garantindo sequências diferentes a cada execução.
+// Herda de Sorter (interface abstrata).
+// A implementação dos métodos está em RandomizedQuickSort.cpp.
 // ─────────────────────────────────────────────────────────────────────────────
 class RandomizedQuickSort : public Sorter {
 public:
 
-    // Inicializa o gerador de números aleatórios com semente do sistema.
-    // random_device coleta entropia real do SO (não é pseudo-aleatório).
-    RandomizedQuickSort() : rng_(std::random_device{}()) {}
+    // Inicializa o gerador Mersenne Twister com seed fixa 67
+    // para garantir reprodutibilidade entre execuções.
+    RandomizedQuickSort();
 
-    void sort(std::vector<int>& arr) override {
-        if (arr.size() <= 1) return;
-        quickSort(arr, 0, static_cast<int>(arr.size()) - 1);
-    }
+    // Ponto de entrada público: ordena o vetor completo.
+    void sort(std::vector<int>& arr) override;
 
-    std::string name() const override {
-        return "RandomizedQuickSort";
-    }
+    // Retorna o nome do algoritmo para identificação na saída.
+    std::string name() const override;
 
 private:
 
-    // Gerador Mersenne Twister — padrão da indústria para pseudo-aleatoriedade
-    // rápida e de boa qualidade estatística.
+    // Gerador de números pseudoaleatórios (Mersenne Twister).
     std::mt19937 rng_;
 
-    // ─────────────────────────────────────────────────────────────────────
-    // randomPivot
-    //
-    // Sorteia um índice aleatório entre low e high (inclusive),
-    // move o elemento desse índice para a última posição (high)
-    // e retorna o valor do pivô.
-    //
-    // Mover para high é uma convenção: o restante do partition
-    // sempre espera o pivô em arr[high].
-    // ─────────────────────────────────────────────────────────────────────
-    int randomPivot(std::vector<int>& arr, int low, int high) {
-        std::uniform_int_distribution<int> dist(low, high);
-        int randomIndex = dist(rng_);
-        std::swap(arr[randomIndex], arr[high]);
-        return arr[high];
-    }
+    // Sorteia um índice aleatório em [low..high], move o elemento
+    // para arr[high] e retorna o valor do pivô.
+    int randomPivot(std::vector<int>& arr, int low, int high);
 
-    // ─────────────────────────────────────────────────────────────────────
-    // partition
-    //
-    // Esquema de particionamento de Lomuto:
-    //   - O pivô fica em arr[high] (posto ali por randomPivot).
-    //   - 'i' rastreia a fronteira entre elementos menores e maiores.
-    //   - Ao final, o pivô é colocado em sua posição definitiva.
-    //
-    // Retorna o índice final do pivô.
-    // ─────────────────────────────────────────────────────────────────────
-    int partition(std::vector<int>& arr, int low, int high) {
-        int pivot = randomPivot(arr, low, high);
+    // Particiona arr[low..high] em torno do pivô (esquema de Lomuto)
+    // e retorna o índice final do pivô.
+    int partition(std::vector<int>& arr, int low, int high);
 
-        int i = low - 1;
-
-        for (int j = low; j < high; j++) {
-            if (arr[j] <= pivot) {
-                i++;
-                std::swap(arr[i], arr[j]);
-            }
-        }
-
-        // Coloca o pivô entre as duas partições
-        std::swap(arr[i + 1], arr[high]);
-        return i + 1;
-    }
-
-    // ─────────────────────────────────────────────────────────────────────
-    // quickSort  (recursivo)
-    // ─────────────────────────────────────────────────────────────────────
-    void quickSort(std::vector<int>& arr, int low, int high) {
-        if (low < high) {
-            int pivotPos = partition(arr, low, high);
-            quickSort(arr, low, pivotPos - 1);
-            quickSort(arr, pivotPos + 1, high);
-        }
-    }
+    // Chamada recursiva principal do QuickSort.
+    void quickSort(std::vector<int>& arr, int low, int high);
 };
 
 #endif
