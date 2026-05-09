@@ -13,7 +13,7 @@ set -e
 
 # Compila
 echo "Compilando..."
-g++ -O0 -Wall -o RandomizedQuickSort main.cpp RandomizedQuickSort.cpp benchmark.cpp
+g++ -O2 -Wall -o RandomizedQuickSort main.cpp RandomizedQuickSort.cpp benchmark.cpp
 echo "Compilado com sucesso."
 echo ""
 

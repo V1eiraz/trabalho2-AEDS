@@ -19,7 +19,7 @@
 set -e
 
 echo "Compilando..."
-gcc -O0 -Wall -o RandomizedQuickSort mainRandomized.c RandomizedQuickSort.c
+gcc -O2 -Wall -o RandomizedQuickSort mainRandomized.c RandomizedQuickSort.c
 echo "Compilado com sucesso."
 echo ""
 

@@ -3,7 +3,7 @@
 # ──────────────────────────────────────────────
 
 CC      = gcc
-FLAGS   = -O0 -Wall
+FLAGS   = -O2 -Wall
 TARGET  = QuickSort
 SOURCES = main.c QuickSort.c
 

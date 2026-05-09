@@ -20,7 +20,7 @@ set -e
 
 # Compila
 echo "Compilando..."
-gcc -O0 -Wall -o QuickSort main.c QuickSort.c
+gcc -O2 -Wall -o QuickSort main.c QuickSort.c
 echo "Compilado com sucesso."
 echo ""
 
