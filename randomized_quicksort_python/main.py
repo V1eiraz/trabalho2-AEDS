@@ -1,10 +1,12 @@
+# Para executar o código:
+# Abra a pasta randomized_quicksort_python no terminal
+# chmod +x exe.sh | Apenas na primeira vez para dar permissão ao arquivo
+# ./exe.sh
+
 import os
 import time
 import random
 import gc
-
-def clear_output():
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 def randomized_quicksort(arr, left, right):
     if left < right:
@@ -26,10 +28,8 @@ def partition(arr, left, right):
     arr[i + 1], arr[right] = arr[right], arr[i + 1]
     return i + 1
 
-def readarchive():
-    dir = os.path.dirname(os.path.abspath(__file__))
+def readarchive(path):
     try:
-        path = os.path.join(dir, "config", "input.dat")
         with open(path, "r") as file:
             n = int(file.readline().strip())
             nums = list(map(int, file.readline().strip().split()))
@@ -49,60 +49,38 @@ def writearchive(arr):
         print("Erro ao escrever arquivo!")
         return
 
-def get_memoria_rss_kb():
-    try:
-        with open("/proc/self/status", "r") as f:
-            for line in f:
-                if line.startswith("VmRSS:"):
-                    return int(line.split()[1])
-    except:
-        return 0
-    return 0
-
 def executar_benchmark(vetor_completo, quantidade_elementos, numero_repeticoes):
     soma_tempos_ms = 0.0
-    soma_memoria_kb = 0
 
     for _ in range(numero_repeticoes):
         vetor_dados = vetor_completo[:quantidade_elementos].copy()
 
         gc.collect()
-        antes = get_memoria_rss_kb()
 
         start = time.perf_counter()
         randomized_quicksort(vetor_dados, 0, quantidade_elementos - 1)
         end = time.perf_counter()
 
-        depois = get_memoria_rss_kb()
-
         soma_tempos_ms += (end - start) * 1000.0
-        soma_memoria_kb += depois - antes
 
     media_tempo_ms = soma_tempos_ms / numero_repeticoes
-    media_memoria_kb = soma_memoria_kb / numero_repeticoes
 
-    print(f"n = {quantidade_elementos:7d}  |  repeticoes = {numero_repeticoes:4d}  |  tempo medio = {media_tempo_ms:8.4f} ms  |  memoria = {media_memoria_kb:8.2f} KB")
+    print(f"n = {quantidade_elementos:7d}  |  repeticoes = {numero_repeticoes:4d}  |  tempo medio = {media_tempo_ms:8.4f} ms")
 
+import sys
 
-if __name__ == "__main__":
-    clear_output()
-    
-    random.seed(67)
-    nums, n = readarchive()
-    
-    if n > 0:
-        tamanhos = [100, 1000, 10000, 100000, 1000000]
-        repeticoes = [100, 100, 100, 100, 100]
-        
-        print("Iniciando Benchmark do Randomized QuickSort...")
-        print("-" * 50)
-        
-        for i in range(len(tamanhos)):
-            if tamanhos[i] <= n:
-                executar_benchmark(nums, tamanhos[i], repeticoes[i])
-        
-        print("-" * 50)
-        print("Benchmark finalizado.")
-        
-    else:
-        print("Nenhum dado encontrado para o benchmark.")
+if len(sys.argv) < 3:
+    print("Uso: python main.py <arquivo> <tamanho>")
+    sys.exit(1)
+
+arquivo_path = sys.argv[1]
+tamanho_desejado = int(sys.argv[2])
+
+nums, n = readarchive(arquivo_path)
+
+if n > 0 and tamanho_desejado <= n:
+    print("---------------------------------------------------------")
+    executar_benchmark(nums, tamanho_desejado, 100)
+    print("---------------------------------------------------------")
+else:
+    print("Nenhum dado encontrado ou tamanho maior que o arquivo.")

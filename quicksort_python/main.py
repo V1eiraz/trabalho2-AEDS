@@ -1,11 +1,13 @@
+# Para executar o código:
+# Abra a pasta quicksort_python no terminal
+# chmod +x exe.sh | Apenas na primeira vez para dar permissão ao arquivo
+# ./exe.sh
+
 import os
 import time
 import random
 import gc
 random.seed(67)
-
-def clear_output():
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 def get_memoria_rss_kb():
     try:
@@ -43,10 +45,8 @@ def partition(arr, left, right):
     arr[i + 1], arr[right] = arr[right], arr[i + 1]
     return i + 1
 
-def readarchive():
-    dir = os.path.dirname(os.path.abspath(__file__))
+def readarchive(path):
     try:
-        path = os.path.join(dir, "config", "input.dat")
         with open(path, "r") as file:
             n = int(file.readline().strip())
             nums = list(map(int, file.readline().strip().split()))
@@ -68,47 +68,36 @@ def writearchive(arr):
 
 def executar_benchmark(vetor_completo, quantidade_elementos, numero_repeticoes):
     soma_tempos_ms = 0.0
-    soma_memoria_kb = 0
 
     for _ in range(numero_repeticoes):
         vetor_dados = vetor_completo[:quantidade_elementos].copy()
 
         gc.collect()
-        antes = get_memoria_rss_kb()
 
         start = time.perf_counter()
         quicksort(vetor_dados, 0, quantidade_elementos - 1)
         end = time.perf_counter()
 
-        depois = get_memoria_rss_kb()
-
         soma_tempos_ms += (end - start) * 1000.0
-        soma_memoria_kb += depois - antes
 
     media_tempo_ms = soma_tempos_ms / numero_repeticoes
-    media_memoria_kb = soma_memoria_kb / numero_repeticoes
 
-    print(f"n = {quantidade_elementos:7d}  |  repeticoes = {numero_repeticoes:4d}  |  tempo medio = {media_tempo_ms:8.4f} ms  |  memoria = {media_memoria_kb:8.2f} KB")
+    print(f"n = {quantidade_elementos:7d}  |  repeticoes = {numero_repeticoes:4d}  |  tempo medio = {media_tempo_ms:8.4f} ms")
 
+import sys
 
-clear_output()
+if len(sys.argv) < 3:
+    print("Uso: python main.py <arquivo> <tamanho>")
+    sys.exit(1)
 
-nums, n = readarchive()
+arquivo_path = sys.argv[1]
+tamanho_desejado = int(sys.argv[2])
 
-if n > 0:
-    print("==============================================")
-    print("  Quick Sort - Pivo: Mediana de Tres (Python) ")
-    print("==============================================")
+nums, n = readarchive(arquivo_path)
 
-    tamanhos_entrada = [100, 1000, 10000, 100000, 1000000]
-    repeticoes_por_tamanho = [100, 100, 100, 100, 100]
-
-    for tamanho, repeticoes in zip(tamanhos_entrada, repeticoes_por_tamanho):
-        if tamanho <= n:
-            executar_benchmark(nums, tamanho, repeticoes)
-        else:
-            print(f"Erro: arquivo tem menos de {tamanho} valores")
-
-    print("==============================================")
+if n > 0 and tamanho_desejado <= n:
+    print("---------------------------------------------------------")
+    executar_benchmark(nums, tamanho_desejado, 100)
+    print("---------------------------------------------------------")
 else:
-    print("Nenhum dado processado.")
+    print("Nenhum dado encontrado ou tamanho maior que o arquivo.")

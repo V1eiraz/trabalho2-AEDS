@@ -1,7 +1,7 @@
-//Para executar o código:
-// go build main.go
-// .\main.exe ou go run main.go
-
+// Para executar o código:
+// Abra a pasta randomized_quicksort_go no terminal
+// chmod +x exe.sh | Apenas na primeira vez para dar permissão ao arquivo
+// ./exe.sh
 package main
 
 import (
@@ -9,24 +9,12 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
 )
-
-func clearOutput() {
-	var cmd *exec.Cmd
-	if runtime.GOOS == "windows" {
-		cmd = exec.Command("cmd", "/c", "cls")
-	} else {
-		cmd = exec.Command("clear")
-	}
-	cmd.Stdout = os.Stdout
-	cmd.Run()
-}
 
 func quicksort(arr []int, left int, right int) {
 	if left < right {
@@ -52,16 +40,7 @@ func partition(arr []int, left int, right int) int {
 	return i + 1
 }
 
-func readArchive() ([]int, int) {
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		fmt.Println("Erro ao obter diretório atual!")
-		return []int{}, 0
-	}
-	dir := filepath.Dir(filename)
-
-	path := filepath.Join(dir, "config", "input.dat")
-
+func readArchive(path string) ([]int, int) {
 	content, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Printf("Arquivo não encontrado em: %s\n", path)
@@ -112,24 +91,8 @@ func writeArchive(arr []int) {
 	writer.Flush()
 }
 
-func getMemoriaRSSKb() int64 {
-	data, err := os.ReadFile("/proc/self/status")
-	if err != nil {
-		return 0
-	}
-	for _, line := range strings.Split(string(data), "\n") {
-		if strings.HasPrefix(line, "VmRSS:") {
-			fields := strings.Fields(line)
-			val, _ := strconv.ParseInt(fields[1], 10, 64)
-			return val
-		}
-	}
-	return 0
-}
-
 func executarBenchmark(vetorCompleto []int, quantidadeElementos int, numeroRepeticoes int) {
 	var somaTemposMs float64
-	var somaMemoriaKb int64
 
 	for i := 0; i < numeroRepeticoes; i++ {
 		vetorDados := make([]int, quantidadeElementos)
@@ -137,48 +100,36 @@ func executarBenchmark(vetorCompleto []int, quantidadeElementos int, numeroRepet
 
 		runtime.GC()
 
-		antes := getMemoriaRSSKb()
-
 		start := time.Now()
 		quicksort(vetorDados, 0, quantidadeElementos-1)
 		elapsed := time.Since(start).Seconds() * 1000.0
 
-		depois := getMemoriaRSSKb()
-
 		somaTemposMs += elapsed
-		somaMemoriaKb += depois - antes
 	}
 
 	mediaTempoMs := somaTemposMs / float64(numeroRepeticoes)
-	mediaMemoriaKb := float64(somaMemoriaKb) / float64(numeroRepeticoes)
 
-	fmt.Printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms  |  memoria = %8.2f KB\n",
-		quantidadeElementos, numeroRepeticoes, mediaTempoMs, mediaMemoriaKb)
+	fmt.Printf("n = %7d  |  repeticoes = %4d  |  tempo medio = %8.4f ms\n",
+		quantidadeElementos, numeroRepeticoes, mediaTempoMs)
 }
 
 func main() {
-	clearOutput()
+	if len(os.Args) < 3 {
+		fmt.Println("Uso: ./main <arquivo> <tamanho>")
+		os.Exit(1)
+	}
+
+	arquivoPath := os.Args[1]
+	tamanhoDesejado, _ := strconv.Atoi(os.Args[2])
 
 	rand.Seed(67)
-	nums, n := readArchive()
+	nums, n := readArchive(arquivoPath)
 
-	if n > 0 {
-		tamanhos := []int{100, 1000, 10000, 100000, 1000000}
-		repeticoes := []int{100, 100, 100, 100, 100}
-
-		fmt.Println("Iniciando Benchmark do Randomized QuickSort...")
+	if n > 0 && tamanhoDesejado <= n {
 		fmt.Println("---------------------------------------------------------")
-
-		for i := 0; i < len(tamanhos); i++ {
-			if tamanhos[i] <= n {
-				executarBenchmark(nums, tamanhos[i], repeticoes[i])
-			}
-		}
-
+		executarBenchmark(nums, tamanhoDesejado, 100)
 		fmt.Println("---------------------------------------------------------")
-		fmt.Println("Benchmark finalizado.")
-
 	} else {
-		fmt.Println("Nenhum dado encontrado para o benchmark.")
+		fmt.Println("Nenhum dado encontrado ou tamanho maior que o arquivo.")
 	}
 }
