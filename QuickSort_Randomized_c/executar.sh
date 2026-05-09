@@ -8,11 +8,12 @@
 #  memoria com GNU Time em cada execucao
 #  separadamente.
 #
-#  Primeira vez:cd QuickSort_Randomized_c
+#  Primeira vez, abra o terminal da pasta executar.sh e rode:
+#               cd QuickSort_Randomized_c
 #               chmod +x executar.sh
 #               ./executar.sh
 #
-#  Depois Uso: ./executar.sh
+#  Depois do primeiro uso: ./executar.sh
 # ──────────────────────────────────────────────
 
 set -e
