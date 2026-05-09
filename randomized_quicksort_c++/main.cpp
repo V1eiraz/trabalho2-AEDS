@@ -1,14 +1,8 @@
-/* Compilar e executar 
-
-chmod +x executar.sh
-./executar.sh
-
-*/
-
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include "RandomizedQuickSort.hpp"
+#include "DataLoader.hpp"
 #include "benchmark.hpp"
 
 // ─────────────────────────────────────────────────────────────────────────────
