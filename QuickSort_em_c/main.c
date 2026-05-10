@@ -2,7 +2,6 @@
  * Quick Sort - Pivo pela Mediana de Tres Aleatorios
  * Seminario: Ordenacoes por Divisao Recursiva
  *
- * Compilar: make
  * Executar: ./executar.sh
  */
 
