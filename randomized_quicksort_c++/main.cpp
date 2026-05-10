@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstdlib>
 #include "RandomizedQuickSort.hpp"
@@ -37,6 +38,21 @@ int main(int argc, char* argv[]) {
 
     try {
         runExperiment(&rqs, loader, n);
+
+        if (n == 1000000) {
+            std::vector<int> data = loader.load(n);
+            rqs.sort(data);
+
+            std::ofstream outFile("output.dat");
+            if (!outFile.is_open()) {
+                std::cerr << "[ERRO] Nao foi possivel criar output.dat" << std::endl;
+                return 1;
+            }
+
+            for (int val : data)
+                outFile << val << "\n";
+        }
+
     } catch (const std::exception& e) {
         std::cerr << "[ERRO] " << e.what() << std::endl;
         return 1;
