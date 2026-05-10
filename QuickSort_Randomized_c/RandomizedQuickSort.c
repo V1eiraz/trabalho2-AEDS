@@ -64,9 +64,6 @@ void randomized_quick_sort(int *vetor, int indice_inicio, int indice_fim) {
 
 /* ─────────────────────────────────────────────
  * LEITURA DO ARQUIVO DE ENTRADA
- *
- * Recebe o nome do arquivo como parametro
- * em vez de usar uma constante fixa no .h.
  * ───────────────────────────────────────────── */
 int ler_arquivo_entrada(const char *nome_arquivo, int *vetor, int quantidade_elementos) {
     FILE *arquivo_entrada = fopen(nome_arquivo, "r");
@@ -103,10 +100,6 @@ void escrever_arquivo_saida(int *vetor, int quantidade_elementos) {
 
 /* ─────────────────────────────────────────────
  * EXECUTAR BENCHMARK PARA UM TAMANHO
- *
- * Medicao de memoria removida daqui — feita
- * externamente pelo GNU Time no script .sh,
- * um processo separado por tamanho de entrada.
  * ───────────────────────────────────────────── */
 void executar_benchmark(const char *nome_arquivo, int quantidade_elementos, int numero_repeticoes) {
     double soma_tempos_ms = 0.0;

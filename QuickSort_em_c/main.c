@@ -8,16 +8,6 @@
 
 #include "QuickSort.h"
 
-/*
- * O main agora recebe dois argumentos:
- *   argv[1] = nome do arquivo de entrada
- *   argv[2] = tamanho da entrada (n)
- *
- * Isso e necessario para que o script .sh
- * possa chamar o programa uma vez por tamanho,
- * permitindo que o GNU Time meça a memoria
- * de cada execucao separadamente.
- */
 int main(int argc, char *argv[]) {
     if (argc < 3) {
         fprintf(stderr, "Uso: %s <arquivo> <tamanho>\n", argv[0]);

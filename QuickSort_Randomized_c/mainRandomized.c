@@ -8,11 +8,6 @@
 
 #include "RandomizedQuickSort.h"
 
-/*
- * Recebe dois argumentos:
- *   argv[1] = nome do arquivo de entrada
- *   argv[2] = tamanho da entrada (n)
- */
 int main(int argc, char *argv[]) {
     if (argc < 3) {
         fprintf(stderr, "Uso: %s <arquivo> <tamanho>\n", argv[0]);

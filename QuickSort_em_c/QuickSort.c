@@ -1,16 +1,11 @@
 /*
  * Quick Sort - Pivo pela Mediana de Tres Aleatorios
- * Seminario: Ordenacoes por Divisao Recursiva
  */
 
 #include "QuickSort.h"
 
 /* ─────────────────────────────────────────────
  * CALCULO DO TEMPO DECORRIDO
- *
- * Recebe dois instantes capturados com
- * clock_gettime e retorna a diferenca em
- * milissegundos com precisao de nanosegundos.
  * ───────────────────────────────────────────── */
 double calcular_tempo_ms(struct timespec tempo_inicio, struct timespec tempo_fim) {
     return (tempo_fim.tv_sec  - tempo_inicio.tv_sec)  * 1000.0
@@ -101,11 +96,6 @@ void quick_sort(int *vetor, int indice_inicio, int indice_fim) {
 
 /* ─────────────────────────────────────────────
  * LEITURA DO ARQUIVO DE ENTRADA
- *
- * Agora recebe o nome do arquivo como parametro
- * em vez de usar uma constante fixa no .h.
- * Isso permite rodar com input.dat, crescente.dat
- * e decrescente.dat sem recompilar.
  * ───────────────────────────────────────────── */
 int ler_arquivo_entrada(const char *nome_arquivo, int *vetor, int quantidade_elementos) {
     FILE *arquivo_entrada = fopen(nome_arquivo, "r");
@@ -142,11 +132,6 @@ void escrever_arquivo_saida(int *vetor, int quantidade_elementos) {
 
 /* ─────────────────────────────────────────────
  * EXECUTAR BENCHMARK PARA UM TAMANHO
- *
- * Recebe o nome do arquivo como parametro.
- * A medicao de memoria foi removida daqui —
- * ela e feita externamente pelo GNU Time
- * no script .sh, um processo por tamanho.
  * ───────────────────────────────────────────── */
 void executar_benchmark(const char *nome_arquivo, int quantidade_elementos, int numero_repeticoes) {
     double soma_tempos_ms = 0.0;
