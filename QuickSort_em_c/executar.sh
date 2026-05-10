@@ -8,18 +8,19 @@
 #  o pico de memoria com GNU Time em cada
 #  execucao separadamente.
 #
-#  Primeira vez:cd QuickSort_em_c
+#  Primeira vez, abra o terminal da pasta executar.sh e rode:
+#               cd QuickSort_em_c
 #               chmod +x executar.sh
 #               ./executar.sh
 #
-#  Depois Uso: ./executar.sh
+#  Depois do primeiro uso: ./executar.sh
 # ──────────────────────────────────────────────
 
 set -e
 
 # Compila
 echo "Compilando..."
-gcc -O0 -Wall -o QuickSort main.c QuickSort.c
+gcc -O2 -Wall -o QuickSort main.c QuickSort.c
 echo "Compilado com sucesso."
 echo ""
 

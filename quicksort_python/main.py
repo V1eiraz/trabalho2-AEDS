@@ -9,16 +9,6 @@ import random
 import gc
 random.seed(67)
 
-def get_memoria_rss_kb():
-    try:
-        with open("/proc/self/status", "r") as f:
-            for line in f:
-                if line.startswith("VmRSS:"):
-                    return int(line.split()[1])
-    except:
-        return 0
-    return 0
-
 def quicksort(arr, left, right):
     if left < right:
         pivo = partition(arr, left, right)

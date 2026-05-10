@@ -13,7 +13,7 @@ set -e
 
 # Compila
 echo "Compilando..."
-g++ -O0 -Wall -o QuickSort main.cpp QuickSort.cpp benchmark.cpp
+g++ -O2 -Wall -o QuickSort main.cpp QuickSort.cpp benchmark.cpp
 echo "Compilado com sucesso."
 echo ""
 
