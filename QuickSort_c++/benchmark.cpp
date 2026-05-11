@@ -3,11 +3,8 @@
 #include <iostream>
 #include <iomanip>
 
-// ─────────────────────────────────────────────────────────────────────────────
-// runSingleSort
-//
 // Executa uma única ordenação e retorna o tempo em milissegundos.
-// ─────────────────────────────────────────────────────────────────────────────
+
 double runSingleSort(Sorter* sorter, std::vector<int>& data) {
     Timer timer;
     timer.start();
@@ -16,21 +13,11 @@ double runSingleSort(Sorter* sorter, std::vector<int>& data) {
     return timer.elapsedMilliseconds();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// runExperiment
-//
 // Executa 'repetitions' rodadas para o tamanho 'n':
 //   1. A cada rodada: usa o DataLoader para carregar os primeiros 'n'
 //      elementos do arquivo, executa a ordenação e acumula o tempo.
 //   2. Imprime o tempo médio ao final.
-//
-// Os dados são recarregados a cada rodada para garantir que o algoritmo
-// sempre ordena um array no estado original do arquivo.
-//
-// A memória é medida externamente pelo GNU Time no executar.sh,
-// que roda um processo separado por (arquivo x tamanho) para que
-// o pico seja individual e não acumulado.
-// ─────────────────────────────────────────────────────────────────────────────
+
 void runExperiment(Sorter* sorter, const DataLoader& loader, size_t n, int repetitions) {
     double totalTime = 0.0;
 

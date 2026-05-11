@@ -1,3 +1,8 @@
+
+// Compilar: g++ -O2 -Wall -o RandomizedQuickSort main.cpp RandomizedQuickSort.cpp benchmark.cpp
+// Executar: ./executar.sh
+
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -6,17 +11,8 @@
 #include "DataLoader.hpp"
 #include "benchmark.hpp"
 
-// ─────────────────────────────────────────────────────────────────────────────
-// main
-//
-// Recebe dois argumentos pela linha de comando:
 //   argv[1] — caminho do arquivo de entrada  (ex: input.dat)
 //   argv[2] — quantidade de elementos a ordenar (ex: 1000)
-//
-// Isso permite que o script executar.sh invoque o programa uma vez
-// por combinação (arquivo x tamanho), de modo que o GNU Time meça
-// o pico de memória de cada execução individualmente.
-// ─────────────────────────────────────────────────────────────────────────────
 int main(int argc, char* argv[]) {
 
     if (argc != 3) {

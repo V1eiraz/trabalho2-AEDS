@@ -119,44 +119,236 @@ Cada linguagem introduz características distintas de desempenho que impactam di
 
 ```
 .
-├── Makefile                        # Script de compilação automática do projeto
-├── input/
-│   └── input.dat                   # Arquivo de entrada com os dados a serem ordenados
-├── output/
-│   └── output.dat                  # Arquivo de saída gerado a cada execução com os resultados
-└── src/
-    ├── c/
-    │   ├── quicksort.c             # Implementação do QS-M3 e RQS em C
-    │   └── quicksort.h             # Declarações das funções em C
-    ├── cpp/
-    │   ├── quicksort.cpp           # Implementação do QS-M3 e RQS em C++
-    │   └── quicksort.hpp           # Declarações das funções em C++
-    ├── java/
-    │   └── QuickSort.java          # Implementação do QS-M3 e RQS em Java
-    ├── python/
-    │   └── quicksort.py            # Implementação do QS-M3 e RQS em Python
-    └── go/
-        └── quicksort.go            # Implementação do QS-M3 e RQS em Go
+├── javaRun.sh                              # Script de compilação e execução do Java (QS-M3 e RQS)
+├── Inputs/
+│   ├── random.dat                          # Arquivo de entrada com dados aleatórios
+│   ├── crescente.dat                       # Arquivo de entrada com dados em ordem crescente
+│   └── decrescente.dat                     # Arquivo de entrada com dados em ordem decrescente
+├── QuickSort_em_c/                         # Quick Sort Mediana de Três — C
+│   ├── main.c                              # Função principal
+│   ├── QuickSort.c                         # Implementação do QS-M3
+│   ├── QuickSort.h                         # Declarações
+│   ├── executar.sh                         # Script de compilação e execução
+│   ├── input.dat                           # Entrada aleatória local
+│   ├── crescente.dat                       # Entrada crescente local
+│   ├── decrescente.dat                     # Entrada decrescente local
+│   └── output.dat                          # Saída gerada
+├── QuickSort_Randomized_c/                 # Randomized Quick Sort — C
+│   ├── mainRandomized.c                    # Função principal
+│   ├── RandomizedQuickSort.c               # Implementação do RQS
+│   ├── RandomizedQuickSort.h               # Declarações
+│   ├── executar.sh                         # Script de compilação e execução
+│   ├── input.dat                           # Entrada aleatória local
+│   ├── crescente.dat                       # Entrada crescente local
+│   ├── decrescente.dat                     # Entrada decrescente local
+│   └── output.dat                          # Saída gerada
+├── QuickSort_c++/                          # Quick Sort Mediana de Três — C++
+│   ├── main.cpp                            # Função principal
+│   ├── QuickSort.cpp                       # Implementação do QS-M3
+│   ├── QuickSort.hpp                       # Declarações
+│   ├── benchmark.cpp / benchmark.hpp       # Módulo de benchmarking
+│   ├── DataLoader.hpp                      # Carregamento dos dados de entrada
+│   ├── Sorter.hpp                          # Abstração do algoritmo de ordenação
+│   ├── Timer.hpp                           # Medição de tempo
+│   ├── executar.sh                         # Script de compilação e execução
+│   ├── input.dat                           # Entrada aleatória local
+│   ├── crescente.dat                       # Entrada crescente local
+│   ├── decrescente.dat                     # Entrada decrescente local
+│   └── output.dat                          # Saída gerada
+├── randomized_quicksort_c++/               # Randomized Quick Sort — C++
+│   ├── main.cpp                            # Função principal
+│   ├── RandomizedQuickSort.cpp             # Implementação do RQS
+│   ├── RandomizedQuickSort.hpp             # Declarações
+│   ├── benchmark.cpp / benchmark.hpp       # Módulo de benchmarking
+│   ├── DataLoader.hpp                      # Carregamento dos dados de entrada
+│   ├── Sorter.hpp                          # Abstração do algoritmo de ordenação
+│   ├── Timer.hpp                           # Medição de tempo
+│   ├── executar.sh                         # Script de compilação e execução
+│   ├── input.dat                           # Entrada aleatória local
+│   ├── crescente.dat                       # Entrada crescente local
+│   ├── decrescente.dat                     # Entrada decrescente local
+│   └── output.dat                          # Saída gerada
+├── quicksortjava/                          # Quick Sort Mediana de Três e RQS — Java
+│   ├── Main.java                           # Função principal
+│   ├── algorithms/
+│   │   ├── Quicksort.java                  # Implementação do QS-M3
+│   │   └── RandomizedQuicksort.java        # Implementação do RQS
+│   ├── common/
+│   │   ├── Benchmark.java                  # Módulo de benchmarking
+│   │   ├── SortAlgorithm.java              # Interface dos algoritmos
+│   │   └── Utils.java                      # Utilitários
+│   ├── inputs/
+│   │   ├── random.dat                      # Entrada aleatória local
+│   │   ├── crescente.dat                   # Entrada crescente local
+│   │   └── decrescente.dat                 # Entrada decrescente local
+│   └── output/
+│       └── output.dat                      # Saída gerada
+├── quicksort_python/                       # Quick Sort Mediana de Três — Python
+│   ├── main.py                             # Implementação e execução do QS-M3
+│   ├── exe.sh                              # Script de execução
+│   ├── config/
+│   │   ├── input.dat                       # Entrada aleatória local
+│   │   ├── crescente.dat                   # Entrada crescente local
+│   │   └── decrescente.dat                 # Entrada decrescente local
+│   └── outputs/
+│       └── output.dat                      # Saída gerada
+├── randomized_quicksort_python/            # Randomized Quick Sort — Python
+│   ├── main.py                             # Implementação e execução do RQS
+│   ├── exe.sh                              # Script de execução
+│   ├── config/
+│   │   ├── input.dat                       # Entrada aleatória local
+│   │   ├── crescente.dat                   # Entrada crescente local
+│   │   └── decrescente.dat                 # Entrada decrescente local
+│   └── outputs/
+│       └── output.dat                      # Saída gerada
+├── quicksort_go/                           # Quick Sort Mediana de Três — Go
+│   ├── main.go                             # Implementação e execução do QS-M3
+│   ├── exe.sh                              # Script de compilação e execução
+│   ├── config/
+│   │   ├── input.dat                       # Entrada aleatória local
+│   │   ├── crescente.dat                   # Entrada crescente local
+│   │   └── decrescente.dat                 # Entrada decrescente local
+│   └── outputs/
+│       └── output.dat                      # Saída gerada
+├── randomized_quicksort_go/                # Randomized Quick Sort — Go
+│   ├── main.go                             # Implementação e execução do RQS
+│   ├── exe.sh                              # Script de compilação e execução
+│   ├── config/
+│   │   ├── input.dat                       # Entrada aleatória local
+│   │   ├── crescente.dat                   # Entrada crescente local
+│   │   └── decrescente.dat                 # Entrada decrescente local
+│   └── outputs/
+│       └── output.dat                      # Saída gerada
+└── charts/
+    ├── charts.py                           # Script de geração dos gráficos
+    ├── ratings.csv                         # Dados consolidados para plotagem
+    └── images/
+        ├── quicksort/                      # Gráficos do QS-M3
+        └── randomizedquicksort/            # Gráficos do RQS
 ```
 
 ---
 
 ### 📌 Descrição dos Módulos
 
-**`quicksort.c` / `quicksort.h`**
-Implementação em C utilizando o gerador `rand()` da libc com semente fixa 67. Contém as funções de particionamento de Lomuto, seleção de pivô por mediana de três e por sorteio simples, e a rotina principal de ordenação recursiva.
+---
 
-**`quicksort.cpp` / `quicksort.hpp`**
-Implementação em C++ utilizando o gerador Mersenne Twister (`std::mt19937`) com semente fixa 67, garantindo maior qualidade estatística na geração dos pivôs. Utiliza `std::vector` para armazenamento dos dados.
+#### 🔷 C — Quick Sort (Mediana de Três) — `QuickSort_em_c/`
 
-**`QuickSort.java`**
-Implementação em Java utilizando `java.util.Random` com semente fixa 67. Inclui duas execuções de aquecimento (warm-up) antes das medições para garantir a estabilização do compilador JIT da JVM.
+**`QuickSort.h`**
+Define as assinaturas de todas as funções do módulo: utilitários (`calcular_tempo_ms`, `trocar_elementos`), seleção de pivô (`sortear_indice_unico`, `calcular_indice_mediana`), algoritmo (`particionar`, `quick_sort`), entrada/saída (`ler_arquivo_entrada`, `escrever_arquivo_saida`) e benchmark (`executar_benchmark`, `gerar_output_ordenado`).
 
-**`quicksort.py`**
-Implementação em Python utilizando o módulo `random` com semente fixa 67. Por se tratar de uma linguagem interpretada, apresenta overhead significativamente maior que as demais implementações, especialmente para entradas de grande porte.
+**`QuickSort.c`**
+Implementação completa do QS-M3 em C. Sorteia três índices distintos aleatoriamente com `rand()` (seed 67) e calcula a mediana dos três candidatos para escolha do pivô. O particionamento segue o esquema de Lomuto. O benchmark executa 100 repetições por tamanho, medindo o tempo com `clock_gettime (CLOCK_MONOTONIC)`.
 
-**`quicksort.go`**
-Implementação em Go utilizando o pacote `math/rand` com semente fixa 67. O cálculo da mediana de três no QS-M3 utiliza `sort.Slice` internamente, introduzindo overhead adicional de alocação por chamada de partição em comparação às demais linguagens.
+**`main.c`**
+Ponto de entrada: recebe por argumento o nome do arquivo e o tamanho `n`, chama `executar_benchmark` com 100 repetições e, se `n = 1000000`, grava o vetor ordenado em `output.dat`.
+
+---
+
+#### 🔷 C — Randomized Quick Sort — `QuickSort_Randomized_c/`
+
+**`RandomizedQuickSort.h`**
+Define as mesmas categorias de funções do módulo C anterior, com a diferença na seleção do pivô: apenas `calcular_indice_aleatorio` (sorteio simples de um único índice), sem cálculo de mediana.
+
+**`RandomizedQuickSort.c`**
+Implementação do RQS em C. Sorteia um único índice aleatório com `rand()` (seed 67) como pivô. O restante do fluxo — particionamento de Lomuto, benchmark de 100 repetições, medição com `clock_gettime` — é idêntico ao módulo QS-M3.
+
+**`mainRandomized.c`**
+Ponto de entrada idêntico ao do QS-M3: recebe arquivo e tamanho por argumento e delega para `executar_benchmark`.
+
+---
+
+#### 🔷 C++ — Quick Sort (Mediana de Três) — `QuickSort_c++/`
+
+**`Sorter.hpp`**
+Classe base abstrata que define a interface comum a todos os algoritmos de ordenação: métodos virtuais puros `sort(vector<int>&)` e `name()`. Permite que o benchmark trabalhe com `Sorter*` sem conhecer os detalhes da implementação (polimorfismo).
+
+**`QuickSort.hpp` / `QuickSort.cpp`**
+Implementação da classe `QuickSort`, herdeira de `Sorter`. Utiliza o gerador Mersenne Twister (`std::mt19937`, seed 67) para sortear três índices distintos e calcular a mediana dos candidatos ao pivô. O particionamento segue o esquema de Lomuto.
+
+**`DataLoader.hpp`**
+Classe responsável pelo carregamento dos dados de entrada. Lê apenas os primeiros `n` inteiros do arquivo a cada chamada, permitindo simular os diferentes tamanhos de entrada (10², 10³, ..., 10⁶) a partir de um único arquivo sem releitura total.
+
+**`Timer.hpp`**
+Classe de medição de tempo com alta precisão, utilizando `std::chrono::high_resolution_clock`. Fornece os métodos `start()`, `stop()` e `elapsedMilliseconds()`.
+
+**`benchmark.hpp` / `benchmark.cpp`**
+Agrupa as funções de benchmarking: `runSingleSort` (executa uma única ordenação e retorna o tempo em ms) e `runExperiment` (executa 100 repetições para um dado tamanho `n` e imprime o tempo médio).
+
+**`main.cpp`**
+Ponto de entrada: instancia o `DataLoader` e o `QuickSort`, e chama `runExperiment` para cada combinação de arquivo e tamanho recebidos por argumento.
+
+---
+
+#### 🔷 C++ — Randomized Quick Sort — `randomized_quicksort_c++/`
+
+**`RandomizedQuickSort.hpp` / `RandomizedQuickSort.cpp`**
+Implementação da classe `RandomizedQuickSort`, herdeira de `Sorter`. Idêntica à estrutura do QS-M3 em C++, diferindo apenas na seleção do pivô: sorteia um único índice aleatório com `std::mt19937` (seed 67), sem cálculo de mediana.
+
+Os demais módulos (`Sorter.hpp`, `DataLoader.hpp`, `Timer.hpp`, `benchmark.hpp`, `benchmark.cpp`, `main.cpp`) são estruturalmente idênticos aos da pasta `QuickSort_c++/`.
+
+---
+
+#### 🔷 Java — Quick Sort e Randomized Quick Sort — `quicksortjava/`
+
+**`common/SortAlgorithm.java`**
+Interface funcional (`@FunctionalInterface`) que define o contrato `sort(int[] array, int esquerda, int direita)`. Permite passar os algoritmos como referência de método para o benchmark.
+
+**`common/Benchmark.java`**
+Contém o método estático `calcularTempo`, que recebe o arquivo, o tamanho `n`, o número de repetições e um `SortAlgorithm`. Lê o array original uma única vez via `Utils.lerArquivo`, clona-o a cada repetição e mede o tempo com `System.nanoTime()`.
+
+**`common/Utils.java`**
+Utilitários compartilhados: `lerArquivo` (leitura eficiente com `BufferedInputStream`, lendo exatamente `n` elementos), `calcularTempoMs` (conversão de nanosegundos para milissegundos) e `swap` (troca de elementos no array).
+
+**`algorithms/Quicksort.java`**
+Implementação do QS-M3 em Java, utilizando `java.util.Random` com seed 67 para sortear três índices distintos e calcular a mediana dos candidatos ao pivô.
+
+**`algorithms/RandomizedQuicksort.java`**
+Implementação do RQS em Java, utilizando `java.util.Random` com seed 67 para sortear um único índice aleatório como pivô.
+
+**`Main.java`**
+Ponto de entrada: recebe por argumento o arquivo, o tamanho `n` e o algoritmo (`qs` ou `rqs`), instancia o algoritmo correspondente e delega para `Benchmark.calcularTempo`.
+
+---
+
+#### 🔷 Python — Quick Sort (Mediana de Três) — `quicksort_python/`
+
+**`main.py`**
+Implementação completa do QS-M3 em Python. Contém a lógica de seleção do pivô por mediana de três candidatos aleatórios (`random` com seed 67), o particionamento de Lomuto, o benchmark de 100 repetições e a escrita do resultado em `outputs/output.dat`. Recebe o arquivo e o tamanho `n` por argumento de linha de comando.
+
+---
+
+#### 🔷 Python — Randomized Quick Sort — `randomized_quicksort_python/`
+
+**`main.py`**
+Implementação completa do RQS em Python. Idêntico ao módulo anterior, diferindo apenas na seleção do pivô: sorteia um único índice aleatório com `random` (seed 67), sem cálculo de mediana.
+
+---
+
+#### 🔷 Go — Quick Sort (Mediana de Três) — `quicksort_go/`
+
+**`main.go`**
+Implementação completa do QS-M3 em Go. Contém a seleção do pivô por mediana de três candidatos aleatórios (`math/rand` com seed 67), o particionamento de Lomuto, o benchmark de 100 repetições com `time.Since()` e a escrita do resultado em `outputs/output.dat`. Recebe o arquivo e o tamanho `n` por argumento de linha de comando.
+
+---
+
+#### 🔷 Go — Randomized Quick Sort — `randomized_quicksort_go/`
+
+**`main.go`**
+Implementação completa do RQS em Go. Idêntico ao módulo anterior, diferindo apenas na seleção do pivô: sorteia um único índice aleatório com `math/rand` (seed 67), sem cálculo de mediana.
+
+---
+
+#### 🔷 Geração de Gráficos — `charts/`
+
+**`charts.py`**
+Script Python responsável por ler os dados consolidados de `ratings.csv` e gerar os gráficos de tempo de execução e consumo de memória para cada algoritmo e cenário, salvando as imagens em `charts/images/`.
+
+**`ratings.csv`**
+Arquivo CSV com os dados consolidados de todas as execuções, utilizado como entrada pelo `charts.py` para geração dos gráficos.
+
+---
 
 ## ⚙️ Metodologia
 
@@ -376,189 +568,190 @@ O RQS foi **consistentemente mais rápido** que o QS-M3 em todos os cenários e 
 
 Para compilar e executar o projeto, certifique-se de ter instalado:
 
-- **g++** com suporte a C++17 ou superior
 - **gcc** com suporte a C11 ou superior
+- **g++** com suporte a C++17 ou superior
 - **OpenJDK 21** ou superior
 - **Python 3.12** ou superior
 - **Go 1.22** ou superior
-- **Make**
+- **GNU Time** (`/usr/bin/time`) para medição de memória
 - **Linux** (Ubuntu 24.04, Linux Mint 22.1 ou equivalente)
 
 ---
 
-### 📌 Passo a Passo
-
-#### 1. Clonar o repositório
+### 📌 Clonar o Repositório
 
 ```bash
 git clone https://github.com/[SEU-USUARIO]/[SEU-REPOSITORIO].git
 cd [SEU-REPOSITORIO]
 ```
 
-#### 2. Executar em C
+---
 
-Verifique se o compilador está instalado:
+### 📌 Formato dos Arquivos de Entrada
 
-```bash
-gcc --version
+Cada pasta de implementação possui seus próprios arquivos de entrada locais. Os arquivos seguem o formato de um número inteiro por linha:
+
+```
+8
+3
+15
+1
+...
 ```
 
-Caso não esteja instalado:
+Os três cenários disponíveis são:
+- **input.dat** / **random.dat** — dados em ordem aleatória
+- **crescente.dat** — dados em ordem crescente
+- **decrescente.dat** — dados em ordem decrescente
 
-```bash
-sudo apt update
-sudo apt install gcc -y
-```
+Os tamanhos avaliados são: **100, 1000, 10000, 100000 e 1000000** elementos.
 
-Compilar e executar:
+---
+
+### 📌 Executar em C — Quick Sort (Mediana de Três)
 
 ```bash
 cd QuickSort_em_c
-chmod +x executar.sh
+chmod +x executar.sh   # apenas na primeira vez
 ./executar.sh
 ```
 
----
-
-#### 4. Executar em C++
-
-Verifique se o compilador está instalado:
-
-```bash
-g++ --version
-```
-
-Caso não esteja instalado:
-
-```bash
-sudo apt update
-sudo apt install g++ -y
-```
-
-Compilar e executar:
-
-```bash
-cd src/cpp
-g++ -O2 -std=c++17 -o quicksort quicksort.cpp
-./quicksort
-```
+O script compila automaticamente com `gcc -O2` e executa o programa para cada combinação de arquivo e tamanho, medindo o pico de memória com **GNU Time**.
 
 ---
 
-#### 5. Executar em Java
-
-Verifique se o runtime está instalado:
+### 📌 Executar em C — Randomized Quick Sort
 
 ```bash
-java --version
+cd QuickSort_Randomized_c
+chmod +x executar.sh   # apenas na primeira vez
+./executar.sh
 ```
 
-Caso não esteja instalado:
+O script compila automaticamente com `gcc -O2` e executa o programa para cada combinação de arquivo e tamanho, medindo o pico de memória com **GNU Time**.
+
+---
+
+### 📌 Executar em C++ — Quick Sort (Mediana de Três)
 
 ```bash
-sudo apt update
-sudo apt install openjdk-21-jdk -y
+cd QuickSort_c++
+chmod +x executar.sh   # apenas na primeira vez
+./executar.sh
 ```
 
-Compilar e executar:
+O script compila automaticamente com `g++ -O2` os arquivos `main.cpp`, `QuickSort.cpp` e `benchmark.cpp`, e executa o programa para cada combinação de arquivo e tamanho.
+
+---
+
+### 📌 Executar em C++ — Randomized Quick Sort
 
 ```bash
-cd trabalho2-AEDS
-chmod +x javaRun.sh
+cd randomized_quicksort_c++
+chmod +x executar.sh   # apenas na primeira vez
+./executar.sh
+```
+
+O script compila automaticamente com `g++ -O2` os arquivos `main.cpp`, `RandomizedQuickSort.cpp` e `benchmark.cpp`, e executa o programa para cada combinação de arquivo e tamanho.
+
+---
+
+### 📌 Executar em Java — Quick Sort e Randomized Quick Sort
+
+O Java possui um único script na raiz do repositório que compila e executa **ambos os algoritmos** (QS-M3 e RQS) sobre todos os cenários e tamanhos:
+
+```bash
+chmod +x javaRun.sh   # apenas na primeira vez
 ./javaRun.sh
 ```
 
----
-
-#### 6. Executar em Python
-
-Verifique se o interpretador está instalado:
-
-```bash
-python3 --version
-```
-
-Caso não esteja instalado:
-
-```bash
-sudo apt update
-sudo apt install python3 -y
-```
-
-Executar:
-
-```bash
-cd src/python
-python3 quicksort.py
-```
+O script realiza as seguintes etapas:
+1. Compila todos os `.java` com `javac` para `quicksortjava/bin/`
+2. Executa o programa para cada combinação de arquivo × tamanho × algoritmo
+3. Mede a memória com **GNU Time** (`-v`)
+4. Grava os resultados formatados em `quicksortjava/output/output.dat`
 
 ---
 
-#### 7. Executar em Go
-
-Verifique se o compilador está instalado:
+### 📌 Executar em Python — Quick Sort (Mediana de Três)
 
 ```bash
-go version
+cd quicksort_python
+chmod +x exe.sh   # apenas na primeira vez
+./exe.sh
 ```
 
-Caso não esteja instalado:
-
-```bash
-sudo apt update
-sudo apt install golang -y
-```
-
-Executar:
-
-```bash
-cd src/go
-go run quicksort.go
-```
+O script verifica a instalação do Python 3, e executa `main.py` para cada combinação de arquivo e tamanho, medindo o pico de memória com **GNU Time**.
 
 ---
 
-#### 8. Executar todos com Makefile
-
-Para compilar e executar todas as linguagens de uma vez:
+### 📌 Executar em Python — Randomized Quick Sort
 
 ```bash
-make
+cd randomized_quicksort_python
+chmod +x exe.sh   # apenas na primeira vez
+./exe.sh
 ```
 
-Para executar após compilação:
+O script verifica a instalação do Python 3, e executa `main.py` para cada combinação de arquivo e tamanho, medindo o pico de memória com **GNU Time**.
+
+---
+
+### 📌 Executar em Go — Quick Sort (Mediana de Três)
 
 ```bash
-make run
+cd quicksort_go
+chmod +x exe.sh   # apenas na primeira vez
+./exe.sh
 ```
 
-Para limpar os arquivos compilados:
+O script compila com `go build` gerando o binário `quicksort_go`, e executa para cada combinação de arquivo e tamanho, medindo o pico de memória com **GNU Time**.
+
+---
+
+### 📌 Executar em Go — Randomized Quick Sort
 
 ```bash
-make clean
+cd randomized_quicksort_go
+chmod +x exe.sh   # apenas na primeira vez
+./exe.sh
 ```
+
+O script compila com `go build` gerando o binário `randomized_quicksort_go`, e executa para cada combinação de arquivo e tamanho, medindo o pico de memória com **GNU Time**.
 
 ---
 
 ### 📌 Saída Esperada
 
-Após a execução, o arquivo `output/output.dat` será gerado com os resultados de cada configuração, contendo:
+Cada execução imprime no terminal o tempo médio e o pico de memória para cada combinação de arquivo e tamanho. Exemplo:
 
-- Linguagem utilizada
-- Algoritmo utilizado (QS-M3 ou RQS)
-- Tamanho da entrada (n)
-- Cenário da entrada (aleatório, crescente ou decrescente)
-- Tempo médio de execução (ms)
-- Consumo de memória (MB)
-
-Exemplo de saída:
 ```
-Linguagem:  C++
-Algoritmo:  QS-M3
-Tamanho:    1000000
-Cenário:    Aleatório
+============================================================
+  Arquivo: input.dat
+============================================================
+--- n = 100 ---
+Tempo médio: 0.0101 ms
+Memoria maxima: 3750 KB
+
+--- n = 1000000 ---
 Tempo médio: 132.9460 ms
-Memória:     7.391 MB
+Memoria maxima: 7391 KB
+```
+
+Para o Java, os resultados são gravados em `quicksortjava/output/output.dat` no seguinte formato:
+
+```
+========================================
+Arquivo: random.dat
+========================================
+
+--- Quicksort (Mediana de 3) ---
++------------+--------------+------------------+--------------+
+| Tamanho    | Repetições   | Tempo médio (ms) | Memória (KB) |
++------------+--------------+------------------+--------------+
+| 100        | 100          | 0.0638           | 44460        |
+| 1000000    | 100          | 161.0770         | 149390       |
++------------+--------------+------------------+--------------+
 ```
 
 ## 📊 Análises e Conclusões

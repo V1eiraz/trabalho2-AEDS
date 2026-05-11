@@ -3,28 +3,17 @@
 
 #include <chrono>
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Classe Timer
-//
+
 // Mede o tempo de execução de trechos de código com alta precisão,
 // utilizando std::chrono (disponível desde C++11).
-//
-// Uso:
-//   Timer t;
-//   t.start();
-//   // ... código a medir ...
-//   t.stop();
-//   double ms = t.elapsedMilliseconds();
-// ─────────────────────────────────────────────────────────────────────────────
+
 class Timer {
 public:
 
-    // Registra o instante de início
     void start() {
         begin_ = std::chrono::high_resolution_clock::now();
     }
 
-    // Registra o instante de fim
     void stop() {
         end_ = std::chrono::high_resolution_clock::now();
     }
