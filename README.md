@@ -395,28 +395,7 @@ git clone https://github.com/[SEU-USUARIO]/[SEU-REPOSITORIO].git
 cd [SEU-REPOSITORIO]
 ```
 
----
-
-#### 2. Configurar o arquivo de entrada
-
-O arquivo `input/input.dat` deve seguir o seguinte formato:
-
-```
-N cenário
-```
-
-Onde:
-- **N**: número de elementos a serem ordenados
-- **cenário**: tipo da entrada (`random`, `ascending` ou `descending`)
-
-Exemplo:
-```
-1000000 random
-```
-
----
-
-#### 3. Executar em C
+#### 2. Executar em C
 
 Verifique se o compilador está instalado:
 
@@ -434,9 +413,9 @@ sudo apt install gcc -y
 Compilar e executar:
 
 ```bash
-cd src/c
-gcc -O2 -o quicksort quicksort.c
-./quicksort
+cd QuickSort_em_c
+chmod +x executar.sh
+./executar.sh
 ```
 
 ---
@@ -484,9 +463,9 @@ sudo apt install openjdk-21-jdk -y
 Compilar e executar:
 
 ```bash
-cd src/java
-javac QuickSort.java
-java QuickSort
+cd trabalho2-AEDS
+chmod +x javaRun.sh
+./javaRun.sh
 ```
 
 ---
