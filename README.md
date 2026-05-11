@@ -1,6 +1,6 @@
 # ⚡ Quick Sort e Randomized Quick Sort: Análise Comparativa Multilinguagem
 
-[![Status](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)]()
+[![Status](http://img.shields.io/static/v1?label=STATUS&message=%20CONCLUÍDO&color=GREEN&style=for-the-badge)]()
 [![Linguagem](http://img.shields.io/static/v1?label=Linguagens&message=C%20|%20C%2B%2B%20|%20Java%20|%20Python%20|%20Go&color=GREEN&style=for-the-badge)]()
 
 ---
