@@ -581,8 +581,8 @@ Para compilar e executar o projeto, certifique-se de ter instalado:
 ### 📌 Clonar o Repositório
 
 ```bash
-git clone https://github.com/[SEU-USUARIO]/[SEU-REPOSITORIO].git
-cd [SEU-REPOSITORIO]
+git clone https://github.com/V1eiraz/trabalho2-AEDS.git
+cd trabalho2-AEDS
 ```
 
 ---
